@@ -1,0 +1,63 @@
+{
+    "realm": "production",
+    "enabled": true,
+    "sslRequired": "external",
+    "displayName": "production",
+    "clientId": "vue-app",
+    "clientSecret": "YOUR_CLIENT_SECRET",
+    "redirectUris": ["http://localhost:8000/*"],
+    "webOrigins": ["http://localhost:8000"],
+    "protocol": "openid-connect",
+    "publicClient": true,
+    "directAccessGrantsEnabled": true,
+    "standardFlowEnabled": false,
+    "implicitFlowEnabled": false,
+    "serviceAccountsEnabled": true,
+    "authorizationServicesEnabled": true,
+    "tokenValidation": {
+      "introspectionUrl": "http://localhost:8080/auth/realms/myrealm/protocol/openid-connect/token/introspect"
+    },
+    "authenticationFlows": [
+      {
+        "alias": "vue-app-flow",
+        "displayName": "Vue App Flow",
+        "description": "Authentication flow for the Vue application",
+        "providerId": "basic-flow",
+        "topLevel": true,
+        "builtIn": false,
+        "authenticationExecutions": [
+          {
+            "authenticator": "auth-username-password-form",
+            "requirement": "ALTERNATIVE"
+          },
+          {
+            "authenticator": "auth-oidc",
+            "requirement": "ALTERNATIVE"
+          }
+        ]
+      }
+    ],
+    "identityProviders": [
+      {
+        "alias": "django-provider",
+        "displayName": "Django Provider",
+        "providerId": "django-oidc",
+        "trustEmail": true,
+        "addReadTokenRoleOnCreate": true,
+        "config": {
+          "clientId": "django-client",
+          "clientSecret": "YOUR_DJANGO_CLIENT_SECRET",
+          "authorizationUrl": "http://localhost:8000/openid/authorize",
+          "tokenUrl": "http://localhost:8000/openid/token",
+          "userInfoUrl": "http://localhost:8000/openid/userinfo",
+          "introspectionUrl": "http://localhost:8000/openid/introspect",
+          "jwksUrl": "http://localhost:8000/openid/jwks",
+          "defaultScope": "openid profile email",
+          "validateSignature": true,
+          "validateTokenBinding": true,
+          "userInfoAttributeName": "preferred_username"
+        }
+      }
+    ]
+  }
+  

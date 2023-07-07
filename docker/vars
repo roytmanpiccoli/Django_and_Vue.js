@@ -1,0 +1,20 @@
+
+DB_VENDOR=POSTGRES
+DB_ADDR= postgres
+DB_PORT=5432
+DB_DATABASE=keycloak
+DB_USER=keycloak
+DB_PASSWORD=password
+DB_SCHEMA=public
+PROXY_ADDRESS_FORWARDING=true
+KEYCLOAK_IMPORT=/tmp/realm-export.json
+# KEYCLOAK_ADMIN_URL_SCHEME=https
+# KEYCLOAK_ADMIN_URL_HOST=8080-roytmanpicc-djangoandvu-ugmfvsg8ayy.ws-eu101.gitpod.io
+KC_PROXY=passthrough
+PROXY_ADDRESS_FORWARDING=true
+KC_HOSTNAME= 0.0.0.0
+# KEYCLOAK_ADMIN= admin 
+# KEYCLOAK_ADMIN_PASSWORD= admin
+KEYCLOAK_USER=user2
+KEYCLOAK_PASSWORD=Pa55w0rd
+KEYCLOAK_IMPORT=/tmp/realm-export.json

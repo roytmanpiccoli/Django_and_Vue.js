@@ -1,0 +1,101 @@
+version: '3'
+
+volumes:
+  postgres_data:
+      driver: local
+
+services:
+  postgres:
+      image: postgres
+      volumes:
+        - postgres_data:/var/lib/postgresql/data
+      depends_on:
+        - postgres
+      environment:
+        POSTGRES_DB: keycloak
+        POSTGRES_USER: keycloak
+        POSTGRES_PASSWORD: password
+
+
+  keycloak:
+      image: quay.io/keycloak/keycloak:legacy
+      env_file:
+         - /workspace/Django_and_Vue.js/docker/vars
+      environment:
+        # DB_VENDOR: POSTGRES
+        # DB_ADDR: postgres
+        # DB_DATABASE: keycloak
+        # DB_USER: keycloak
+        # DB_SCHEMA: public
+        # DB_PASSWORD: password
+        # KEYCLOAK_USER: admin
+        # KEYCLOAK_PASSWORD: Pa55w0rd
+        # KC_HOSTNAME: 0.0.0.0
+        # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
+        #JDBC_PARAMS: "ssl=true"
+        KEYCLOAK_OPTS: "-Djboss.bind.address.management=0.0.0.0 -Djboss.bind.address=0.0.0.0"
+        KC_HOSTNAME_URL: https://8080-roytmanpicc-djangoandvu-ugmfvsg8ayy.ws-eu101.gitpod.io/auth/
+        KC_HOSTNAME_ADMIN_URL: https://8080-roytmanpicc-djangoandvu-ugmfvsg8ayy.ws-eu101.gitpod.io/auth/
+
+      # volumes:
+      #   - /workspace/Django_and_Vue.js/docker/realm-export.json:/tmp/realm-export.json        
+      ports:
+        - 8080:8080
+
+      depends_on:
+        - postgres
+
+# version: '3.7'
+
+# services:
+#   postgres:
+#     image: postgres:13
+#     container_name: postgres
+#     environment:
+#       POSTGRES_DB: keycloak
+#       POSTGRES_USER: keycloak
+#       POSTGRES_PASSWORD: password
+#     ports:
+#       - 5434:5432
+
+#   keycloak:
+#     image: jboss/keycloak:11.0.3
+#     container_name: keycloak
+#     environment:
+#       DB_VENDOR: POSTGRES
+#       DB_ADDR: postgres
+#       DB_DATABASE: keycloak
+#       DB_USER: keycloak
+#       DB_PASSWORD: password
+#       KEYCLOAK_USER: admin
+#       KEYCLOAK_PASSWORD: password
+#       PROXY_ADDRESS_FORWARDING: "true"
+#       TZ: UTC
+#       KEYCLOAK_DEFAULT_THEME: theme-minimal
+#       KEYCLOAK_WELCOME_THEME: theme-minimal
+#       #KEYCLOAK_LOGLEVEL: DEBUG
+#     ports:
+#       - 8088:8080
+#     command:
+#        - "-Dkeycloak.migration.action=import -Dkeycloak.migration.provider=dir -Dkeycloak.migration.dir=/opt/jboss/keycloak/import-dir -Dkeycloak.migration.strategy=OVERWRITE_EXISTING"
+# #      - "-Dkeycloak.migration.action=export -Dkeycloak.migration.provider=dir -Dkeycloak.migration.dir=/opt/jboss/keycloak/export-dir -Dkeycloak.migration.usersPerFile=1000 -Dkeycloak.migration.strategy=OVERWRITE_EXISTING"
+#     volumes:
+#       - .keycloak-containers/_resources/demo-config/standalone-ha.xml:/opt/jboss/keycloak/standalone/configuration/standalone-ha.xml
+#       - .keycloak-containers/_resources/demo-config/import-dir:/opt/jboss/keycloak/import-dir
+#       - .keycloak-containers/_resources/demo-config/export-dir:/opt/jboss/keycloak/export-dir
+#       #- .keycloak-containers/theme-minimal/src/main/resources/theme/theme-minimal:/opt/jboss/keycloak/themes/theme-minimal
+#       - .keycloak-containers/theme-minimal/target/theme-minimal-0.0.1-SNAPSHOT.jar:/opt/jboss/keycloak/standalone/deployments/theme-minimal-0.0.1-SNAPSHOT.jar
+#       - .keycloak-containers/provider-domain/target/provider-domain-0.0.1-SNAPSHOT.jar:/opt/jboss/keycloak/standalone/deployments/provider-domain-0.0.1-SNAPSHOT.jar
+#       - .keycloak-containers/spi-registration-profile/target/spi-registration-profile-0.0.1-SNAPSHOT.jar:/opt/jboss/keycloak/standalone/deployments/spi-registration-profile-0.0.1-SNAPSHOT.jar
+#       - .keycloak-containers/spi-resource/target/spi-resource-0.0.1-SNAPSHOT.jar:/opt/jboss/keycloak/standalone/deployments/spi-resource-0.0.1-SNAPSHOT.jar
+#       - .keycloak-containers/spi-event-listener/target/spi-event-listener-0.0.1-SNAPSHOT.jar:/opt/jboss/keycloak/standalone/deployments/spi-event-listener-0.0.1-SNAPSHOT.jar
+#       - .keycloak-containers/spi-mail-template-override/target/spi-mail-template-override-0.0.1-SNAPSHOT.jar:/opt/jboss/keycloak/standalone/deployments/spi-mail-template-override-0.0.1-SNAPSHOT.jar
+#     depends_on:
+#       - postgres
+#       - mailhog
+
+#   mailhog:
+#     image: mailhog/mailhog:latest
+#     container_name: mailhog
+#     ports:
+#       - 8025:8025
