@@ -2,19 +2,26 @@ version: '3'
 
 volumes:
   postgres_data:
-      driver: local
+    driver: local
 
 services:
   postgres:
-      image: postgres
-      volumes:
-        - postgres_data:/var/lib/postgresql/data
-      depends_on:
-        - postgres
-      environment:
-        POSTGRES_DB: keycloak
-        POSTGRES_USER: keycloak
-        POSTGRES_PASSWORD: password
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+
+  data_copy:
+    image: alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./local_directory:/var/lib/postgresql/data
+    command: sh -c "cp -R /var/lib/postgresql/data. /var/lib/postgresql/data"
+    depends_on:
+      - postgres
 
 
   keycloak:
